@@ -102,7 +102,6 @@ class MessageList extends Component {
   render() {
     return (
       <div>
-        <p>{this.state.otp}</p>
         <ListGroup>
           {
             this.state.contacts.map((el) => 
