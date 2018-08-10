@@ -53,17 +53,6 @@ class MessageList extends Component {
     this.setState({ showEntry: false });
   }
 
-  componentDidMount() {
-    fetch(`/send`)//, {test: true})
-      .then(data => {
-        // this.state.otp = 'data.otp'
-        this.setState({
-          otp: true
-        })
-      })
-      .catch(error => console.error(error));
-  }
-
   handleMessage() {
     this.setState({
       show: false,
@@ -75,12 +64,6 @@ class MessageList extends Component {
       time: new Date()
     })
     fetch(`/send?otp=${this.state.otp}&number=${this.state.selectedContact.number}`)//, {test: true})
-      .then(data => {
-        // this.state.otp = 'data.otp'
-        this.setState({
-          otp: true
-        })
-      })
       .catch(error => console.error(error));
   }
 
