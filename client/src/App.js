@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import MessageList from './components/MessageList'
 import Tabs from './components/Tabs'
 
 import './App.css';
@@ -12,6 +11,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <link rel="stylesheet" href={stylesheetPath} integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+          <h3>OTP MANAGER</h3>
         </header>
         <Tabs />
       </div>

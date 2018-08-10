@@ -3,15 +3,10 @@ import {
   ListGroup,
   ListGroupItem,
   Modal,
-  Popover,
-  Tooltip,
-  OverlayTrigger,
   Button,
-  FieldGroup,
   FormGroup,
   ControlLabel,
-  FormControl,
-  HelpBlock
+  FormControl
 } from 'react-bootstrap'
 
 import {
@@ -22,10 +17,15 @@ class MessageList extends Component {
   constructor (props, context) {
     super(props, context)
     this.handleShow = this.handleShow.bind(this)
+    this.handleShowEntry = this.handleShowEntry.bind(this)
     this.handleClose = this.handleClose.bind(this)
+    this.handleCloseEntry = this.handleCloseEntry.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handleChangeName = this.handleChangeName.bind(this)
+    this.handleChangeNumber = this.handleChangeNumber.bind(this)
     this.handleMessage = this.handleMessage.bind(this)
     this.setMessages = this.props.setMessages.bind(this)
+    this.handleContact = this.handleContact.bind(this)
     this.state = {
       contacts: [
         {
@@ -38,6 +38,7 @@ class MessageList extends Component {
         }
       ],
       show: false,
+      showEntry: false,
       selectedContact: {},
       value: '',
       otp: '='
@@ -46,6 +47,10 @@ class MessageList extends Component {
   
   handleClose() {
     this.setState({ show: false });
+  }
+
+  handleCloseEntry() {
+    this.setState({ showEntry: false });
   }
 
   componentDidMount() {
@@ -79,6 +84,18 @@ class MessageList extends Component {
       .catch(error => console.error(error));
   }
 
+  handleContact() {
+    const contacts = this.state.contacts
+
+    contacts.push({
+      name: this.state.valueName,
+      number: this.state.valueNumber,
+      showEntry: false
+    })
+
+    this.setState({contacts})
+  }
+
   handleShow(el) {
     const otp = Math.floor(Math.random() * 1000000)
     this.setState({
@@ -86,6 +103,12 @@ class MessageList extends Component {
       selectedContact: el,
       otp,
       value: `Hi. Your OTP is: ${otp}`
+    })
+  }
+
+  handleShowEntry(el) {
+    this.setState({
+      showEntry: true
     })
   }
 
@@ -97,6 +120,14 @@ class MessageList extends Component {
 
   handleChange(e) {
     this.setState({ value: e.target.value });
+  }
+
+  handleChangeName(e) {
+    this.setState({ valueName: e.target.value });
+  }
+
+  handleChangeNumber(e) {
+    this.setState({ valueNumber: e.target.value });
   }
 
   render() {
@@ -112,6 +143,7 @@ class MessageList extends Component {
             )
           }
         </ListGroup>
+        <Button onClick={this.handleShowEntry}>Add a contact</Button>
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>{this.state.selectedContact.name}</Modal.Title>
@@ -135,6 +167,38 @@ class MessageList extends Component {
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.handleMessage}>Send</Button>
+          </Modal.Footer>
+        </Modal>
+        <Modal show={this.state.showEntry} onHide={this.handleCloseEntry}>
+          <Modal.Header closeButton>
+            <Modal.Title>{this.state.selectedContact.name}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <form>
+              <FormGroup
+                controlId="formBasicText"
+                validationState={this.getValidationState()}
+              >
+                <ControlLabel>Name</ControlLabel>
+                <FormControl
+                  type="text"
+                  value={this.state.valueName}
+                  placeholder="Enter text"
+                  onChange={this.handleChangeName}
+                />
+                <ControlLabel>Number</ControlLabel>
+                <FormControl
+                  type="text"
+                  value={this.state.valueNumber}
+                  placeholder="Enter Number"
+                  onChange={this.handleChangeNumber}
+                />
+                <FormControl.Feedback />
+              </FormGroup>
+            </form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.handleContact}>Add</Button>
           </Modal.Footer>
         </Modal>
       </div>
